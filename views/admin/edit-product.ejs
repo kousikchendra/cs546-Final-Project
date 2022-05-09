@@ -1,0 +1,42 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+<body>
+   <%- include('../includes/navigation.ejs') %>
+    <main>
+        <form class="product-form" enctype="multipart/form-data" action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST">
+            <div class="form-control">
+                <label for="title">Listing Title</label>
+                <input class="bi-form-control" type="text" name="title" id="title" value="<% if(editing){ %><%= product.title %><% } %>" required>
+            </div>
+            <div class="form-control">
+                <label for="imageUrl">Listing Image</label>
+                <input class="bi-form-control" type="file" name="image_url" id="imageUrl" required>
+            </div>
+            <div class="form-control">
+                <label for="brand">Brand</label>
+                <select class="bi-form-control" name="brand" id="brand" required>
+                    <option value="">Select Brand</option>
+                    <option <% if(editing && product.brand == 'Yzeeys'){ %> selected <% } %> value="Yzeeys">Yzeeys</option>
+                    <option <% if(editing && product.brand == 'Nike'){ %> selected <% } %> value="Nike">Nike</option>
+                    <option <% if(editing && product.brand == 'Jordan'){ %> selected <% } %> value="Jordan">Jordan</option>
+                    <option <% if(editing && product.brand == 'Adidas'){ %> selected <% } %> value="Adidas">Adidas</option>
+                </select>
+            </div>
+            <div class="form-control">
+                <label for="price">Listing Price</label>
+                <input class="bi-form-control" type="number" name="price" id="price" step="0.01" value="<% if (editing) { %><%= product.price %><% } %>" required>
+            </div>
+            <div class="form-control">
+                <label for="description">Listing Description</label>
+                <textarea class="bi-form-control" name="description" id="description" rows="5" required><% if (editing) { %><%= product.description %><% } %></textarea>
+            </div>
+            <% if(editing){ %>
+                <input type="hidden" value="<%= product._id %>" name="productId">
+            <% } %>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn" type="submit"><% if (editing) { %>Update Listing<% } else { %>Add Listing<% } %></button>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>
